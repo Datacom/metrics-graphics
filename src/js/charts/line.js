@@ -14,18 +14,18 @@
   }
 
   function mg_add_confidence_band_generator (args, plot, svg) {
-    plot.existing_band = svg.selectAll('.mg-confidence-band');
+    plot.existing_band = mg_selectAll_and_remove(svg, '.mg-confidence-band');
     if (args.show_confidence_band) {
       plot.confidence_area = d3.svg.area()
         .defined(plot.line.defined())
         .x(args.scalefns.xf)
         .y0(function (d) {
           var l = args.show_confidence_band[0];
-          return args.scales.Y(d[l]);
+          return d[l] ? args.scales.Y(d[l]) : null;
         })
         .y1(function (d) {
           var u = args.show_confidence_band[1];
-          return args.scales.Y(d[u]);
+          return d[u] ? args.scales.Y(d[u]) : null;
         })
         .interpolate(args.interpolate)
         .tension(args.interpolate_tension);
